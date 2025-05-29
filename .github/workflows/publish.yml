@@ -100,7 +100,7 @@ jobs:
 
       - name: 🚀 Push version bump
         run: |
-          git add pi-ui/package.json pi-ui/yarn.lock
+          git add package.json yarn.lock
           git commit -m "chore: bump version to ${{ steps.package-info.outputs.version }}"
           git tag "v${{ steps.package-info.outputs.version }}"
           git push origin main
