@@ -3,8 +3,8 @@ import { useWizardContext, WizardFooter } from "./";
 import { FormikContextType } from "formik";
 import { FC, PropsWithChildren, ReactElement, useEffect, useMemo } from "react";
 
-type WizardFormPanelProps = {
-  formik: FormikContextType<unknown>;
+type WizardFormPanelProps<T = any> = {
+  formik: FormikContextType<T>;
   showWarnings?: boolean;
   customErrorComponent?: ReactElement;
 };

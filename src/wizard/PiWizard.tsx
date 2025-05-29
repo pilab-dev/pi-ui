@@ -26,7 +26,7 @@ import React, {
 } from "react";
 // import ServerIcon from "../components/icons/ServerIcon";
 
-const ServerIcon = () => {
+const ServerIcon = ({ color }: { color: string }) => {
   return <></>;
 };
 
@@ -160,7 +160,7 @@ type WizardProps = {
 };
 
 type WizardFooterProps = {
-  buttons?: JSX.Element;
+  buttons?: ReactElement;
   footer?: ReactElement;
   finishLabel?: string;
   nextLabel?: string;
@@ -218,7 +218,7 @@ export const WizardFooter: FC<WizardFooterProps> = ({
   );
 };
 
-const wizardContext = createContext<PropsWithChildren<WizzardHook>>(undefined);
+const wizardContext = createContext<WizzardHook | null>(null);
 
 export const useWizardContext = () => {
   const ctx = useContext(wizardContext);
