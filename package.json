@@ -18,6 +18,11 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "LICENSE.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch"
