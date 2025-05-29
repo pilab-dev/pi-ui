@@ -54,7 +54,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ env.REGISTRY_URL }}
           cache: 'yarn'
-          cache-dependency-path: 'pi-ui/yarn.lock'
+          cache-dependency-path: 'yarn.lock'
 
       - name: 📋 Setup Git user
         run: |
@@ -62,19 +62,19 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: 📦 Install dependencies
-        working-directory: ./pi-ui
+        working-directory: .
         run: yarn install --frozen-lockfile
 
       - name: 🔍 Run type checking
-        working-directory: ./pi-ui
+        working-directory: .
         run: yarn tsc --noEmit
 
       - name: 🏗️ Build package
-        working-directory: ./pi-ui
+        working-directory: .
         run: yarn build
 
       - name: 🏷️ Bump version
-        working-directory: ./pi-ui
+        working-directory: .
         run: |
           if [ "${{ inputs.version_type }}" = "prerelease" ]; then
             yarn version --prerelease --preid=${{ inputs.prerelease_tag }} --no-git-tag-version
@@ -85,7 +85,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📤 Publish to NPM
-        working-directory: ./pi-ui
+        working-directory: .
         run: |
           yarn publish --access public --tag ${{ inputs.npm_tag }} --non-interactive
         env:
@@ -93,7 +93,7 @@ jobs:
 
       - name: 📝 Get package info
         id: package-info
-        working-directory: ./pi-ui
+        working-directory: .
         run: |
           echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
           echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
