@@ -1,0 +1,161 @@
+name: 🚀 Build, Version & Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
+      prerelease_tag:
+        description: 'Prerelease tag (e.g., alpha, beta, rc)'
+        required: false
+        default: 'alpha'
+        type: string
+      npm_tag:
+        description: 'NPM distribution tag'
+        required: false
+        default: 'latest'
+        type: choice
+        options:
+          - latest
+          - beta
+          - alpha
+          - next
+
+env:
+  NODE_VERSION: '20'
+  REGISTRY_URL: 'https://registry.npmjs.org'
+
+jobs:
+  publish:
+    name: 📦 Build & Publish Package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: ${{ env.REGISTRY_URL }}
+          cache: 'yarn'
+          cache-dependency-path: 'pi-ui/yarn.lock'
+
+      - name: 📋 Setup Git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: 📦 Install dependencies
+        working-directory: ./pi-ui
+        run: yarn install --frozen-lockfile
+
+      - name: 🔍 Run type checking
+        working-directory: ./pi-ui
+        run: yarn tsc --noEmit
+
+      - name: 🏗️ Build package
+        working-directory: ./pi-ui
+        run: yarn build
+
+      - name: 🏷️ Bump version
+        working-directory: ./pi-ui
+        run: |
+          if [ "${{ inputs.version_type }}" = "prerelease" ]; then
+            yarn version --prerelease --preid=${{ inputs.prerelease_tag }} --no-git-tag-version
+          else
+            yarn version --${{ inputs.version_type }} --no-git-tag-version
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📤 Publish to NPM
+        working-directory: ./pi-ui
+        run: |
+          yarn publish --access public --tag ${{ inputs.npm_tag }} --non-interactive
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: 📝 Get package info
+        id: package-info
+        working-directory: ./pi-ui
+        run: |
+          echo "name=$(node -p "require('./package.json').name")" >> $GITHUB_OUTPUT
+          echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: 🚀 Push version bump
+        run: |
+          git add pi-ui/package.json pi-ui/yarn.lock
+          git commit -m "chore: bump version to ${{ steps.package-info.outputs.version }}"
+          git tag "v${{ steps.package-info.outputs.version }}"
+          git push origin main
+          git push origin "v${{ steps.package-info.outputs.version }}"
+
+      - name: 📋 Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "v${{ steps.package-info.outputs.version }}"
+          release_name: "🎨 Pi-UI v${{ steps.package-info.outputs.version }}"
+          body: |
+            ## 🎉 What's New in v${{ steps.package-info.outputs.version }}
+            
+            ### 📦 Package Information
+            - **Package**: ${{ steps.package-info.outputs.name }}
+            - **Version**: ${{ steps.package-info.outputs.version }}
+            - **NPM Tag**: ${{ inputs.npm_tag }}
+            - **Version Type**: ${{ inputs.version_type }}
+            
+            ### 📥 Installation
+            ```bash
+            npm install ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}
+            # or
+            yarn add ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}
+            ```
+            
+            ### 🔗 Links
+            - [NPM Package](https://www.npmjs.com/package/${{ steps.package-info.outputs.name }})
+            - [Documentation](https://github.com/${{ github.repository }}/tree/main/pi-ui#readme)
+            
+            ---
+            
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.package-info.outputs.version }}...v${{ steps.package-info.outputs.version }}
+          draft: false
+          prerelease: ${{ inputs.version_type == 'prerelease' || inputs.npm_tag != 'latest' }}
+
+      - name: 📢 Summary
+        run: |
+          echo "## 🎉 Successfully Published!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Package Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Name**: \`${{ steps.package-info.outputs.name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: \`${{ steps.package-info.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **NPM Tag**: \`${{ inputs.npm_tag }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version Bump**: \`${{ inputs.version_type }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Quick Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [NPM Package](https://www.npmjs.com/package/${{ steps.package-info.outputs.name }})" >> $GITHUB_STEP_SUMMARY
+          echo "- [GitHub Release](https://github.com/${{ github.repository }}/releases/tag/v${{ steps.package-info.outputs.version }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📥 Install Commands" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm install ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "# or" >> $GITHUB_STEP_SUMMARY
+          echo "yarn add ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY 
