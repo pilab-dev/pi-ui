@@ -1,6 +1,6 @@
 {
   "name": "@pilab/pi-ui",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "LGPL-3.0-or-later",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -43,11 +43,11 @@
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
+    "@mui/icons-material": "^7.1.0",
+    "@mui/material": "^7.1.0",
+    "formik": "^2.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "@mui/material": "^7.1.0",
-    "@mui/icons-material": "^7.1.0",
-    "react-router-dom": "^7.6.1",
-    "formik": "^2.4.6"
+    "react-router-dom": "^7.6.1"
   }
 }
