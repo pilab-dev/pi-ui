@@ -16,8 +16,6 @@ import {
 } from "@mui/material";
 import React, {
   createContext,
-  FC,
-  PropsWithChildren,
   ReactElement,
   ReactNode,
   useContext,
@@ -169,30 +167,38 @@ type WizardFooterProps = {
   prevDisable?: boolean;
   onNext?: () => Promise<void> | void;
   onFinish?: () => Promise<void> | void;
+
+  children?: ReactNode;
 };
 
-export const WizardPanel: FC<PropsWithChildren<WizardFooterProps>> = ({ children, ...props }) => {
+export const WizardPanel = ({ children, ...props }: WizardFooterProps) => {
   return (
     <Box flex={1} display="flex" flexDirection="column">
       {children}
 
       <Box flex={1}></Box>
       <Divider />
-      <Box m={1} display="flex" alignItems="center" flexDirection="row" justifyContent="flex-end">
+      <Box
+        m={1}
+        display="flex"
+        alignItems="center"
+        flexDirection="row"
+        justifyContent="flex-end"
+      >
         <WizardFooter {...props} />
       </Box>
     </Box>
   );
 };
 
-export const WizardFooter: FC<WizardFooterProps> = ({
+export const WizardFooter = ({
   finishLabel = "Finish",
   nextDisable,
   prevDisable,
   onNext,
   onFinish,
   footer,
-}) => {
+}: WizardFooterProps) => {
   const wizard = useWizardContext();
 
   return (
@@ -203,10 +209,20 @@ export const WizardFooter: FC<WizardFooterProps> = ({
         </Typography>
       )}
       <div style={{ flex: 1 }} />
-      <Button disabled={!wizard.hasPrevious() || prevDisable} type="button" size="small" onClick={wizard.back}>
+      <Button
+        disabled={!wizard.hasPrevious() || prevDisable}
+        type="button"
+        size="small"
+        onClick={wizard.back}
+      >
         Back
       </Button>
-      <Button disabled={!wizard.hasNext() || nextDisable} type="button" size="small" onClick={onNext || wizard.next}>
+      <Button
+        disabled={!wizard.hasNext() || nextDisable}
+        type="button"
+        size="small"
+        onClick={onNext || wizard.next}
+      >
         Next
       </Button>
       {!wizard.hasNext() && (
@@ -229,7 +245,9 @@ export const useWizardContext = () => {
   return ctx;
 };
 
-const WizardStepComponent = ({ step, idx, wizard }: { step: IWizardStep; idx: number; wizard: WizzardHook }) => {
+type WizardStepProps = { step: IWizardStep; idx: number; wizard: WizzardHook };
+
+const WizardStepComponent = ({ step, idx, wizard }: WizardStepProps) => {
   const theme = useTheme();
 
   let stepColor = "#aaa";
@@ -269,7 +287,7 @@ const WizardStepComponent = ({ step, idx, wizard }: { step: IWizardStep; idx: nu
   );
 };
 
-export const Wizard: FC<WizardProps> = ({ title, wizard, open, onClose, icon }) => {
+export const Wizard = ({ title, wizard, open, onClose, icon }: WizardProps) => {
   const theme = useTheme();
 
   return useMemo(
@@ -302,19 +320,31 @@ export const Wizard: FC<WizardProps> = ({ title, wizard, open, onClose, icon }) 
 
           <Divider variant="fullWidth" />
 
-          <Box display="flex" flexGrow={1} flexDirection="row" bgcolor={theme.palette.background.paper}>
+          <Box
+            display="flex"
+            flexGrow={1}
+            flexDirection="row"
+            bgcolor={theme.palette.background.paper}
+          >
             <Box
               sx={{
                 minWidth: 250,
                 borderRight: "#88888833 1px solid",
                 background:
-                  theme.palette.mode === "light" ? "#cccccc29" : lighten(theme.palette.background.paper, 0.03),
+                  theme.palette.mode === "light"
+                    ? "#cccccc29"
+                    : lighten(theme.palette.background.paper, 0.03),
               }}
             >
               <List disablePadding>
                 {/* <ListSubheader>Steps</ListSubheader> */}
                 {wizard.steps.map((step, idx) => (
-                  <WizardStepComponent key={step.label} idx={idx} step={step} wizard={wizard} />
+                  <WizardStepComponent
+                    key={step.label}
+                    idx={idx}
+                    step={step}
+                    wizard={wizard}
+                  />
                 ))}
               </List>
             </Box>
@@ -331,5 +361,3 @@ export const Wizard: FC<WizardProps> = ({ title, wizard, open, onClose, icon }) 
     [wizard.activeStep, wizard.isComplete, wizard.isInvalid, open]
   );
 };
-
-export default Wizard;

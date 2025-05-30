@@ -1,5 +1,5 @@
 import { alpha, Box, lighten, Typography, useTheme } from "@mui/material";
-import { FC, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 type PiListItemProps = {
@@ -9,7 +9,7 @@ type PiListItemProps = {
   link?: string;
 };
 
-const PiListItem: FC<PiListItemProps> = ({ title, value, icon, link }) => {
+export const PiListItem: React.FC<PiListItemProps> = ({ title, value, icon, link }) => {
   const {
     palette: {
       primary: { main: mainColor },
@@ -45,4 +45,3 @@ const PiListItem: FC<PiListItemProps> = ({ title, value, icon, link }) => {
   );
 };
 
-export default PiListItem;

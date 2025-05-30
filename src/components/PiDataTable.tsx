@@ -149,5 +149,3 @@ export const DataTable = <T,>({ table }: DataTableProps<T>) => {
     </Paper>
   );
 };
-
-export default DataTable;

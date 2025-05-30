@@ -18,7 +18,7 @@ type PiToolbarProps = {
   actions?: ReactNode;
 };
 
-const PiToolbar: FC<PropsWithChildren<PiToolbarProps>> = ({ icon, label, actions, children }) => {
+export const PiToolbar: React.FC<PropsWithChildren<PiToolbarProps>> = ({ icon, label, actions, children }) => {
   return (
     <Box flex={1} display="flex" flexDirection="row">
       <Box
@@ -48,5 +48,3 @@ const PiToolbar: FC<PropsWithChildren<PiToolbarProps>> = ({ icon, label, actions
     </Box>
   );
 };
-
-export default PiToolbar;

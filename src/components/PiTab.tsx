@@ -1,6 +1,5 @@
 import { alpha, Tab, Tabs } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import React from "react";
 
 const tabMinHeight = "32px";
 
@@ -71,4 +70,3 @@ export const PiTab = styled((props: Omit<PiTabProps, "disableRipple">) => <Tab d
   })
 );
 
-export default PiTab;

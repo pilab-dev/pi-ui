@@ -1,15 +1,15 @@
 /* elsint:disable */
 import { Warning } from "@mui/icons-material";
 import { Box, Link } from "@mui/material";
-import { FC, PropsWithChildren } from "react";
 import { useNavigate } from "react-router-dom";
 
 export type PiErrorBoxProps = {
   showBack?: boolean;
   icon?: React.ReactNode;
+  children?: React.ReactNode;
 };
 
-export const PiErrorBox: FC<PropsWithChildren<PiErrorBoxProps>> = ({ showBack, icon, children }) => {
+export const PiErrorBox = ({ showBack, icon, children }: PiErrorBoxProps) => {
   const navigate = useNavigate();
 
   return (
@@ -33,5 +33,3 @@ export const PiErrorBox: FC<PropsWithChildren<PiErrorBoxProps>> = ({ showBack, i
     </Box>
   );
 };
-
-export default PiErrorBox;

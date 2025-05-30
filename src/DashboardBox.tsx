@@ -1,8 +1,14 @@
-import { Card, CardProps, LinearProgress, Box as MatBox, Typography } from "@mui/material";
-import { FC, PropsWithChildren, ReactElement, ReactNode } from "react";
-import PiErrorBox from "./components/PiErrorBox";
+import {
+  Card,
+  CardProps,
+  LinearProgress,
+  Box as MatBox,
+  Typography,
+} from "@mui/material";
+import { PropsWithChildren, ReactElement, ReactNode } from "react";
+import { PiErrorBox } from "./components/PiErrorBox";
 
-const PiCard: FC<CardProps> = ({ children, ...props }) => {
+const PiCard: React.FC<CardProps> = ({ children, ...props }) => {
   //   const theme = useTheme();
 
   return (
@@ -33,7 +39,7 @@ type DashboardBoxProps = {
 
 const Placeholder = () => <MatBox flex={1} />;
 
-export const DashboardBox: FC<PropsWithChildren<DashboardBoxProps>> = ({
+export const DashboardBox: React.FC<PropsWithChildren<DashboardBoxProps>> = ({
   children,
   title,
   actions,
@@ -60,7 +66,14 @@ export const DashboardBox: FC<PropsWithChildren<DashboardBoxProps>> = ({
       ) : (
         <div style={{ height: "3px" }}></div>
       )}
-      <MatBox display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" mb={2} mx={2}>
+      <MatBox
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+        mx={2}
+      >
         <Typography py={2} fontSize={"19px"} fontWeight="300">
           {title}
         </Typography>

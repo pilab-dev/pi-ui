@@ -10,7 +10,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "outDir": "dist",
-    "lib": ["dom", "dom.iterable", "esnext"]
+    "lib": ["dom", "esnext"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

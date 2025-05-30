@@ -1,7 +1,7 @@
 import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { FormikContextType } from "formik";
-import { FC, ReactElement, useEffect, useState } from "react";
-import Loading from "./Loading";
+import { ReactElement, useEffect, useState } from "react";
+import { Loading } from "./Loading";
 
 export interface PiSelectItem {
   label: string;
@@ -20,7 +20,7 @@ type PiSelectProps<T = any> = {
   value?: unknown;
 };
 
-export const PiSelect: FC<PiSelectProps> = ({ formik, property, label, value, items, helperText = " ", required }) => {
+export const PiSelect: React.FC<PiSelectProps> = ({ formik, property, label, value, items, helperText = " ", required }) => {
   return (
     <Box display="flex" flexDirection="column" gap="1">
       {label && (
@@ -59,7 +59,7 @@ type PiSelectAsyncProps<T = any> = {
   loadingText?: string;
 } & Omit<PiSelectProps<T>, "items">;
 
-export const PiSelectAsync: FC<PiSelectAsyncProps> = ({ loader, loadingText, ...props }) => {
+export const PiSelectAsync: React.FC<PiSelectAsyncProps> = ({ loader, loadingText, ...props }) => {
   const [loaded, setLoaded] = useState(false);
   const [items, setItems] = useState<PiSelectItem[]>([]);
   const [loadError, setLoadError] = useState<string>("");

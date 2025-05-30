@@ -1,13 +1,13 @@
 import { Box, InputLabel, TextField, TextFieldProps } from "@mui/material";
 import { FormikContextType } from "formik";
-import { FC } from "react";
+import { FC, JSX } from "react";
 
 export type PiTextFieldProps<T = any> = {
   formik: FormikContextType<T>;
   property: keyof T;
 } & TextFieldProps;
 
-export const PiTextField: FC<PiTextFieldProps> = ({
+export const PiTextField: React.FC<PiTextFieldProps> = ({
   label,
   value,
   formik,
@@ -15,7 +15,7 @@ export const PiTextField: FC<PiTextFieldProps> = ({
   helperText = " ",
   // margin,
   ...props
-}) => {
+}): JSX.Element => {
   return (
     <Box display="flex" flexDirection="column">
       <InputLabel

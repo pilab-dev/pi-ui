@@ -6,14 +6,14 @@ type LoadingProps = {
   fullScreen?: boolean;
 };
 
-const FullScreenLoader = styled(Box)(() => ({
+export const FullScreenLoader = styled(Box)(() => ({
   flex: 1,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
 }));
 
-export const Loading: FC<LoadingProps> = ({ message = "Loading...", fullScreen }) => {
+export const Loading = ({ message = "Loading...", fullScreen }: LoadingProps) => {
   const IndicatorPass = () => (
     <Box display="flex" flexDirection="row" gap={1} alignItems="center">
       <CircularProgress color="primary" size={14} />
@@ -32,5 +32,3 @@ export const Loading: FC<LoadingProps> = ({ message = "Loading...", fullScreen }
 
   return <IndicatorPass />;
 };
-
-export default Loading;

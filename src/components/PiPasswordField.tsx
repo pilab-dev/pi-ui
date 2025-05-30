@@ -1,11 +1,11 @@
 import { IconButton, InputAdornment } from "@mui/material";
-import { FC, useState } from "react";
+import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { PiTextField, PiTextFieldProps } from "./PiTextField";
 
 export type PiPasswordFieldProps = PiTextFieldProps;
 
-export const PiPasswordField: FC<PiPasswordFieldProps> = ({ ...props }) => {
+export const PiPasswordField: React.FC<PiPasswordFieldProps> = ({ ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (

@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 
 export type BoxProps = {
   spacing?: number;
@@ -7,7 +7,7 @@ export type BoxProps = {
   flex?: boolean;
 };
 
-export const HBox: FC<PropsWithChildren<BoxProps>> = ({
+export const HBox: React.FC<PropsWithChildren<BoxProps>> = ({
   spacing = 0,
   children,
   valign = "top",
@@ -51,7 +51,7 @@ export const HBox: FC<PropsWithChildren<BoxProps>> = ({
   );
 };
 
-export const VBox: FC<PropsWithChildren<BoxProps>> = ({
+export const VBox: React.FC<PropsWithChildren<BoxProps>> = ({
   spacing = 0,
   children,
   valign = "top",

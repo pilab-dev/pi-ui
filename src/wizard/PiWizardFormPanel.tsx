@@ -1,20 +1,21 @@
 import { Alert, AlertTitle, Box, Divider, Typography } from "@mui/material";
-import { useWizardContext, WizardFooter } from "./";
 import { FormikContextType } from "formik";
-import { FC, PropsWithChildren, ReactElement, useEffect, useMemo } from "react";
+import { ReactElement, useEffect, useMemo } from "react";
+import { useWizardContext, WizardFooter } from "./";
 
 type WizardFormPanelProps<T = any> = {
   formik: FormikContextType<T>;
   showWarnings?: boolean;
   customErrorComponent?: ReactElement;
+  children?: ReactElement;
 };
 
-export const WizardFormPanel: FC<PropsWithChildren<WizardFormPanelProps>> = ({
+export const WizardFormPanel = ({
   children,
   formik,
   showWarnings = false,
   customErrorComponent,
-}) => {
+}: WizardFormPanelProps) => {
   const wizard = useWizardContext();
 
   useEffect(() => {

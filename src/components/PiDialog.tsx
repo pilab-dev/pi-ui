@@ -1,12 +1,13 @@
 import { Close } from "@mui/icons-material";
 import { Box, Dialog, Divider, IconButton, Typography } from "@mui/material";
-import { createContext, FC, PropsWithChildren, ReactNode, useContext, useState } from "react";
+import { createContext, PropsWithChildren, useContext } from "react";
+import { usePiDialog } from "./usePiDialog";
 
 const dialogContext = createContext<PiDialogHook | null>(null);
 
-type PiDialogHook = ReturnType<typeof usePiDialog>;
+export type PiDialogHook = ReturnType<typeof usePiDialog>;
 
-export const PiDialogProvider: FC<PropsWithChildren<PiDialogHook>> = ({ children, ...dialog }) => {
+export const PiDialogProvider: React.FC<PropsWithChildren<PiDialogHook>> = ({ children, ...dialog }) => {
   return (
     <dialogContext.Provider value={dialog}>
       {children}
@@ -58,48 +59,3 @@ export const PiDialog = () => {
   );
 };
 
-type PiDialogHookProps = {
-  onClose?: () => void;
-  noSoftClose?: boolean;
-  icon?: ReactNode;
-  title?: ReactNode;
-  content: ReactNode;
-  fullScreen?: boolean;
-};
-
-export const usePiDialog = ({
-  icon,
-  title,
-  noSoftClose,
-  content,
-  fullScreen: initialFullScreen,
-  onClose,
-}: PiDialogHookProps) => {
-  const [open, setOpen] = useState(false);
-  const [fullScreen, setFullscreen] = useState(initialFullScreen);
-
-  const show = () => {
-    setOpen(true);
-  };
-
-  const close = () => {
-    setOpen(false);
-  };
-
-  const toggleFullscreen = () => {
-    setFullscreen((v) => !v);
-  };
-
-  return {
-    icon,
-    onClose: onClose || close,
-    open,
-    show,
-    close,
-    toggleFullscreen,
-    fullScreen,
-    noSoftClose,
-    content,
-    title,
-  };
-};

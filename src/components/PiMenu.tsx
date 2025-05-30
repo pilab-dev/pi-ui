@@ -1,5 +1,5 @@
 import { alpha, Divider, Menu, MenuProps, styled, useTheme } from "@mui/material";
-import { FC, PropsWithChildren, ReactElement } from "react";
+import { PropsWithChildren, ReactElement } from "react";
 
 const StyledMenu = styled(Menu)(({ theme }) => ({
   "& .MuiPaper-root": {
@@ -40,7 +40,7 @@ export type PiMenuProps = {
   onClose: () => void;
 } & MenuProps;
 
-const PiMenu: FC<PropsWithChildren<PiMenuProps>> = ({ title, anchorEl, open, onClose, children, ...props }) => {
+export const PiMenu: React.FC<PropsWithChildren<PiMenuProps>> = ({ title, anchorEl, open, onClose, children, ...props }) => {
   const theme = useTheme();
 
   if (title) {
@@ -70,5 +70,3 @@ const PiMenu: FC<PropsWithChildren<PiMenuProps>> = ({ title, anchorEl, open, onC
     </StyledMenu>
   );
 };
-
-export default PiMenu;

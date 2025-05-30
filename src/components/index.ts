@@ -14,3 +14,5 @@ export * from "./PiSelect";
 export * from "./PiTab";
 export * from "./PiTextField";
 export * from "./PiToolbar";
+export * from "./usePiDialog";
+
