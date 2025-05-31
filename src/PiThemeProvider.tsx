@@ -1,5 +1,16 @@
-import { alpha, createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
-import { createContext, PropsWithChildren, useMemo } from "react";
+import {
+  alpha,
+  createTheme,
+  ThemeProvider,
+  useMediaQuery,
+} from "@mui/material";
+import {
+  createContext,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 export const primaryColor = "#0279AE";
 const cardBorderColor = "#24242433";
@@ -8,7 +19,6 @@ type ThemeMode = "auto" | "light" | "dark";
 
 type PiProviderProps = {
   themeMode?: ThemeMode;
-  setThemeMode: (mode: ThemeMode) => void;
 };
 
 export interface IPiThemeContext {
@@ -17,12 +27,25 @@ export interface IPiThemeContext {
 }
 
 /* eslint-disable-next-line */
-export const PiThemeContext = createContext<IPiThemeContext | null>(null);
+export const piThemeContext = createContext<IPiThemeContext | undefined>(
+  undefined
+);
 
-export const PiThemeProvider: React.FC<PropsWithChildren<PiProviderProps>> = ({ children, themeMode, setThemeMode }) => {
+export const PiThemeProvider: React.FC<PropsWithChildren<PiProviderProps>> = ({
+  children,
+  themeMode: defaultThemeMode,
+}) => {
+  const [themeMode, setThemeMode] = useState<ThemeMode | undefined>();
   const osDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
-  const prefersDarkMode = themeMode === "auto" ? osDarkMode : themeMode === "dark";
+  useEffect(() => {
+    if (defaultThemeMode === "auto") {
+      setThemeMode(osDarkMode ? "dark" : "light");
+      return;
+    }
+
+    setThemeMode(themeMode === "dark" ? "dark" : "light");
+  }, [defaultThemeMode]);
 
   const theme = useMemo(
     () =>
@@ -159,21 +182,21 @@ export const PiThemeProvider: React.FC<PropsWithChildren<PiProviderProps>> = ({ 
           primary: {
             main: primaryColor,
           },
-          mode: prefersDarkMode ? "dark" : "light",
+          mode: themeMode === "auto" ? undefined : themeMode,
         },
       }),
-    [prefersDarkMode, themeMode]
+    [themeMode]
   );
 
   return (
-    <PiThemeContext.Provider
+    <piThemeContext.Provider
       value={{
-        themeMode: prefersDarkMode ? "dark" : "light",
+        themeMode: themeMode ?? "auto",
         setThemeMode,
       }}
     >
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </PiThemeContext.Provider>
+    </piThemeContext.Provider>
   );
 };
 

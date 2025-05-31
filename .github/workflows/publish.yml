@@ -53,14 +53,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: ${{ env.REGISTRY_URL }}
-          # cache: 'pnpm'
-          # cache-dependency-path: 'pnpm-lock.yaml'
-
-      - name: 📋 Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          # run_install: false
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
 
       - name: 📋 Setup Git user
         run: |
@@ -69,23 +63,23 @@ jobs:
 
       - name: 📦 Install dependencies
         working-directory: .
-        run: pnpm install --frozen-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: 🔍 Run type checking
         working-directory: .
-        run: pnpm tsc --noEmit
+        run: yarn tsc --noEmit
 
       - name: 🏗️ Build package
         working-directory: .
-        run: pnpm build
+        run: yarn build
 
       - name: 🏷️ Bump version
         working-directory: .
         run: |
           if [ "${{ inputs.version_type }}" = "prerelease" ]; then
-            pnpm version --prerelease --preid=${{ inputs.prerelease_tag }} --no-git-tag-version
+            yarn version --prerelease --preid=${{ inputs.prerelease_tag }} --no-git-tag-version
           else
-            pnpm version --${{ inputs.version_type }} --no-git-tag-version
+            yarn version --${{ inputs.version_type }} --no-git-tag-version
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -93,7 +87,7 @@ jobs:
       - name: 📤 Publish to NPM
         working-directory: .
         run: |
-          pnpm publish --access public --tag ${{ inputs.npm_tag }} --no-git-checks
+          yarn publish --access public --tag ${{ inputs.npm_tag }} --non-interactive
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -106,7 +100,7 @@ jobs:
 
       - name: 🚀 Push version bump
         run: |
-          git add package.json pnpm-lock.yaml
+          git add package.json yarn.lock
           git commit -m "chore: bump version to ${{ steps.package-info.outputs.version }}"
           git tag "v${{ steps.package-info.outputs.version }}"
           git push origin main
@@ -130,9 +124,7 @@ jobs:
             
             ### 📥 Installation
             ```bash
-            npm install ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}
-            # or
-            pnpm add ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}
+            yarn add ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}
             ```
             
             ### 🔗 Links
@@ -161,7 +153,5 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📥 Install Commands" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "npm install ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
-          echo "# or" >> $GITHUB_STEP_SUMMARY
-          echo "pnpm add ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
+          echo "yarn add ${{ steps.package-info.outputs.name }}@${{ inputs.npm_tag }}" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY 
