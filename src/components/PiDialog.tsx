@@ -59,3 +59,5 @@ export const PiDialog = () => {
   );
 };
 
+export default PiDialog;
+

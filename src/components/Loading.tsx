@@ -1,19 +1,12 @@
-import { Box, CircularProgress, styled, Typography } from "@mui/material";
-import { FC } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import FullScreenLoader from "./FullScreenLoader";
 
 type LoadingProps = {
   message?: string;
   fullScreen?: boolean;
 };
 
-export const FullScreenLoader = styled(Box)(() => ({
-  flex: 1,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-}));
-
-export const Loading = ({ message = "Loading...", fullScreen }: LoadingProps) => {
+const Loading = ({ message = "Loading...", fullScreen }: LoadingProps) => {
   const IndicatorPass = () => (
     <Box display="flex" flexDirection="row" gap={1} alignItems="center">
       <CircularProgress color="primary" size={14} />
@@ -32,3 +25,5 @@ export const Loading = ({ message = "Loading...", fullScreen }: LoadingProps) =>
 
   return <IndicatorPass />;
 };
+
+export default Loading;

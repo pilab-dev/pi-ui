@@ -1,16 +1,25 @@
 {
   "compilerOptions": {
     "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "jsx": "react-jsx",
-    "esModuleInterop": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node", // Or "node16" for modern Node.js module resolution
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
     "outDir": "dist",
-    "lib": ["dom", "esnext"]
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "paths": {
+      "@pilab/pi-ui": ["./src"]
+    }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

@@ -20,14 +20,14 @@ import {
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
 
-interface TablePaginationActionsProps {
+interface PiDataTablePaginationActionsProps {
   count: number;
   page: number;
   rowsPerPage: number;
   onPageChange: (event: React.MouseEvent<HTMLButtonElement>, newPage: number) => void;
 }
 
-const TablePaginationActions: FC<TablePaginationActionsProps> = ({ count, page, rowsPerPage, onPageChange }) => {
+const PiDataTablePaginationActions: FC<PiDataTablePaginationActionsProps> = ({ count, page, rowsPerPage, onPageChange }) => {
   // const theme = useTheme();
 
   const handleFirstPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -64,11 +64,11 @@ const TablePaginationActions: FC<TablePaginationActionsProps> = ({ count, page, 
   );
 };
 
-interface DataTableProps<T> {
+interface PiDataTableProps<T> {
   table: TanStackTable<T>;
 }
 
-export const DataTable = <T,>({ table }: DataTableProps<T>) => {
+export const PiDataTable = <T,>({ table }: PiDataTableProps<T>) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (_event: unknown, newPage: number) => {
@@ -144,8 +144,10 @@ export const DataTable = <T,>({ table }: DataTableProps<T>) => {
         page={table.getState().pagination.pageIndex}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        ActionsComponent={TablePaginationActions}
+        ActionsComponent={PiDataTablePaginationActions}
       />
     </Paper>
   );
 };
+
+export default PiDataTable;

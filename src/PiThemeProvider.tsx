@@ -1,5 +1,5 @@
 import { alpha, createTheme, ThemeProvider, useMediaQuery } from "@mui/material";
-import { createContext, FC, PropsWithChildren, useMemo } from "react";
+import { createContext, PropsWithChildren, useMemo } from "react";
 
 export const primaryColor = "#0279AE";
 const cardBorderColor = "#24242433";
@@ -19,7 +19,7 @@ export interface IPiThemeContext {
 /* eslint-disable-next-line */
 export const PiThemeContext = createContext<IPiThemeContext | null>(null);
 
-export const PiThemeProvider: FC<PropsWithChildren<PiProviderProps>> = ({ children, themeMode, setThemeMode }) => {
+export const PiThemeProvider: React.FC<PropsWithChildren<PiProviderProps>> = ({ children, themeMode, setThemeMode }) => {
   const osDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const prefersDarkMode = themeMode === "auto" ? osDarkMode : themeMode === "dark";

@@ -1,17 +1,14 @@
 /* elsint:disable */
 import { Warning } from "@mui/icons-material";
 import { Box, Link } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 export type PiErrorBoxProps = {
-  showBack?: boolean;
+  onBack?: () => void;
   icon?: React.ReactNode;
   children?: React.ReactNode;
 };
 
-export const PiErrorBox = ({ showBack, icon, children }: PiErrorBoxProps) => {
-  const navigate = useNavigate();
-
+const PiErrorBox: React.FC<PiErrorBoxProps> = ({ onBack, icon, children }) => {
   return (
     <Box
       flex={1}
@@ -25,11 +22,13 @@ export const PiErrorBox = ({ showBack, icon, children }: PiErrorBoxProps) => {
     >
       <span>{icon ?? <Warning fontSize="large" color="primary" />}</span>
       {children}
-      {showBack && (
-        <Link onClick={() => navigate(-1)} underline="hover">
+      {onBack && (
+        <Link onClick={onBack} underline="hover">
           go back
         </Link>
       )}
     </Box>
   );
 };
+
+export default PiErrorBox;

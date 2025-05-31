@@ -95,3 +95,5 @@ export const VBox: React.FC<PropsWithChildren<BoxProps>> = ({
     </div>
   );
 };
+
+export default HBox;

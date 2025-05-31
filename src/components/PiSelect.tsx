@@ -1,7 +1,15 @@
-import { Box, FormControl, FormHelperText, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@mui/material";
 import { FormikContextType } from "formik";
 import { ReactElement, useEffect, useState } from "react";
-import { Loading } from "./Loading";
+import Loading from "./Loading";
 
 export interface PiSelectItem {
   label: string;
@@ -20,11 +28,23 @@ type PiSelectProps<T = any> = {
   value?: unknown;
 };
 
-export const PiSelect: React.FC<PiSelectProps> = ({ formik, property, label, value, items, helperText = " ", required }) => {
+export const PiSelect: React.FC<PiSelectProps> = ({
+  formik,
+  property,
+  label,
+  value,
+  items,
+  helperText = " ",
+  required,
+}) => {
   return (
     <Box display="flex" flexDirection="column" gap="1">
       {label && (
-        <InputLabel error={Boolean(formik.errors[property])} htmlFor={property} required={required}>
+        <InputLabel
+          error={Boolean(formik.errors[property])}
+          htmlFor={property}
+          required={required}
+        >
           {label}:
         </InputLabel>
       )}
@@ -37,8 +57,17 @@ export const PiSelect: React.FC<PiSelectProps> = ({ formik, property, label, val
           value={value === "" ? value : value || formik.values[property]}
         >
           {items.map((item) => (
-            <MenuItem disabled={item.disabled} key={item.value} value={item.value}>
-              <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
+            <MenuItem
+              disabled={item.disabled}
+              key={item.value}
+              value={item.value}
+            >
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+              >
                 {item.icon}
                 {item.label}
               </Box>
@@ -59,7 +88,11 @@ type PiSelectAsyncProps<T = any> = {
   loadingText?: string;
 } & Omit<PiSelectProps<T>, "items">;
 
-export const PiSelectAsync: React.FC<PiSelectAsyncProps> = ({ loader, loadingText, ...props }) => {
+export const PiSelectAsync: React.FC<PiSelectAsyncProps> = ({
+  loader,
+  loadingText,
+  ...props
+}) => {
   const [loaded, setLoaded] = useState(false);
   const [items, setItems] = useState<PiSelectItem[]>([]);
   const [loadError, setLoadError] = useState<string>("");

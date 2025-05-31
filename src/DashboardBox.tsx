@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { PropsWithChildren, ReactElement, ReactNode } from "react";
-import { PiErrorBox } from "./components/PiErrorBox";
+import PiErrorBox from "./components/PiErrorBox";
 
 const PiCard: React.FC<CardProps> = ({ children, ...props }) => {
   //   const theme = useTheme();
