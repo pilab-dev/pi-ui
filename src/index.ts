@@ -2,7 +2,7 @@
 export { default as Button } from "./Button";
 export { default as DashboardBox } from "./DashboardBox";
 export {
-  PiThemeContext,
+  type IPiThemeContext,
   PiThemeProvider,
   primaryColor,
 } from "./PiThemeProvider";
